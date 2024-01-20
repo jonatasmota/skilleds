@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import ConfirmationModal from "./modal-delete-confirmation";
 import { Badge } from "@/components/ui/badge";
 import { EditCourseModal } from "./course-edit";
+import { ExternalLink } from "lucide-react";
 
 interface CourseItemProps {
   title: string;
@@ -22,6 +23,21 @@ interface CourseItemProps {
   status: string;
   _id: string;
 }
+
+const getStatusVariant = (status: string) => {
+  switch (status) {
+    case "doing":
+      return "success"; // ou qualquer outra variante desejada
+    case "willdo":
+      return "info"; // ou qualquer outra variante desejada
+    case "applied":
+      return "outline"; // ou qualquer outra variante desejada
+    case "wanttodo":
+      return "destructive"; // ou qualquer outra variante desejada
+    default:
+      return "default"; // ou qualquer outra variante padrão
+  }
+};
 
 export const CourseItem = ({
   title,
@@ -51,31 +67,37 @@ export const CourseItem = ({
 
   return (
     <>
-      <Card className="w-[450px]">
+      <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <Badge variant="destructive">{status}</Badge>
+          <Badge variant={getStatusVariant(status) || "secondary"}>
+            {status}
+          </Badge>
         </CardContent>
         <CardFooter className="flex justify-between">
-          {/* <Link href={`/courses/edit/${_id}`}>
-            <Button variant="outline">Edit</Button>
-          </Link> */}
-
-          <EditCourseModal
-            courseTitle={title}
-            courseDescription={description}
-            courseLink={link}
-            courseStatus={status}
-            courseId={_id}
-          />
-          <Link href={link}>
-            <Button>Visit</Button>
+          <Link
+            href={link.startsWith("http") ? link : `http://${link}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button size="sm" variant="success">
+              <ExternalLink className="h-5 w-5" />
+            </Button>
           </Link>
+          <div className="flex gap-2">
+            <EditCourseModal
+              courseTitle={title}
+              courseDescription={description}
+              courseLink={link}
+              courseStatus={status}
+              courseId={_id}
+            />
 
-          <ConfirmationModal onConfirm={confirmDelete} />
+            <ConfirmationModal onConfirm={confirmDelete} />
+          </div>
         </CardFooter>
       </Card>
     </>

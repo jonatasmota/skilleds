@@ -22,54 +22,64 @@ import { SetStateAction, useEffect, useState } from "react";
 
 import toast from "react-hot-toast";
 
-interface EditCourseModalProps {
-  courseId: string;
-  courseTitle: string;
-  courseDescription: string;
-  courseLink: string;
-  courseStatus: string;
+interface EditBookModalProps {
+  bookId: string;
+  bookTitle: string;
+  bookDescription: string;
+  bookAuthor: string;
+  bookLink: string;
+  bookStatus: string;
+  bookSubject: string;
 }
 
 export const EditCourseModal = ({
-  courseDescription,
-  courseId,
-  courseLink,
-  courseStatus,
-  courseTitle,
-}: EditCourseModalProps) => {
-  const [newTitle, setNewTitle] = useState(courseTitle || "");
-  const [newDescription, setNewDescription] = useState(courseDescription || "");
-  const [newLink, setNewLink] = useState(courseLink || "");
-  const [newStatus, setNewStatus] = useState(courseStatus || "");
+  bookAuthor,
+  bookDescription,
+  bookId,
+  bookLink,
+  bookStatus,
+  bookSubject,
+  bookTitle,
+}: EditBookModalProps) => {
+  const [newTitle, setNewTitle] = useState(bookTitle || "");
+  const [newDescription, setNewDescription] = useState(bookDescription || "");
+  const [newLink, setNewLink] = useState(bookLink || "");
+  const [newStatus, setNewStatus] = useState(bookStatus || "");
+  const [newAuthor, setNewAuthor] = useState(bookAuthor || "");
+  const [newSubject, setNewSubject] = useState(bookSubject || "");
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const fetchCourseData = async () => {
+    const fetchBookData = async () => {
       try {
-        const res = await fetch(`/api/courses/${courseId}`);
+        const res = await fetch(`/api/books/${bookId}`);
         if (res.ok) {
-          const courseData = await res.json();
-          setNewTitle(courseData.title);
-          setNewDescription(courseData.description);
-          setNewLink(courseData.link);
-          setNewStatus(courseData.status);
+          const bookData = await res.json();
+          setNewTitle(bookData.title);
+          setNewDescription(bookData.description);
+          setNewLink(bookData.link);
+          setNewStatus(bookData.status);
+          setNewAuthor(bookData.author);
+          setNewSubject(bookData.subject);
         } else {
-          console.log("Error fetching course data");
+          console.log("Error fetching book data");
+          toast.error("Error fetching book data");
         }
       } catch (error) {
-        console.error("Error fetching course data", error);
+        console.error("Error fetching book data", error);
+        toast.error("Error fetching book data");
       }
     };
 
-    if (isOpen && courseId) {
-      fetchCourseData();
+    if (isOpen && bookId) {
+      fetchBookData();
     }
-  }, [isOpen, courseId]);
+  }, [isOpen, bookId]);
 
-  const editCourse = async (e: React.FormEvent<HTMLFormElement>) => {
+  const editBook = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const res = await fetch(`/api/courses/${courseId}`, {
+      const res = await fetch(`/api/books/${bookId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -79,19 +89,22 @@ export const EditCourseModal = ({
           newDescription,
           newLink,
           newStatus,
+          newAuthor,
+          newSubject,
         }),
       });
 
       if (res.ok) {
-        console.log("Course updated successfully");
-        toast.success("Course updated successfully");
+        console.log("Book updated successfully");
+        toast.success("Book updated successfully");
         window.location.reload();
       } else {
-        console.log("Error editing course");
-        toast.error("Error editing course");
+        console.log("Error editing book");
+        toast.error("Error editing book");
       }
     } catch (error) {
-      console.log("Error editing course", error);
+      console.log("Error editing vook", error);
+      toast.error("Error editing book");
     }
   };
 
@@ -103,13 +116,10 @@ export const EditCourseModal = ({
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px]">
-        <form onSubmit={editCourse}>
+        <form onSubmit={editBook}>
           <DialogHeader>
-            <DialogTitle>Edit Course</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
-            </DialogDescription>
+            <DialogTitle>Edit Book</DialogTitle>
+            <DialogDescription>Edit the book information</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -122,6 +132,18 @@ export const EditCourseModal = ({
                 className="col-span-3"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="author" className="text-right">
+                Author
+              </Label>
+              <Input
+                id="Author"
+                placeholder="Simon Sinek"
+                className="col-span-3"
+                value={newAuthor}
+                onChange={(e) => setNewAuthor(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -142,7 +164,7 @@ export const EditCourseModal = ({
               </Label>
               <Input
                 id="username"
-                placeholder="Course url"
+                placeholder="Book url"
                 className="col-span-3"
                 value={newLink}
                 onChange={(e) => setNewLink(e.target.value)}
@@ -162,10 +184,9 @@ export const EditCourseModal = ({
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="doing">Doing</SelectItem>
-                    <SelectItem value="willdo">Will Do</SelectItem>
-                    <SelectItem value="applied">Applied</SelectItem>
-                    <SelectItem value="wanttodo">Want to do</SelectItem>
+                    <SelectItem value="reading">Reading</SelectItem>
+                    <SelectItem value="to-read">To read</SelectItem>
+                    <SelectItem value="done">Done</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

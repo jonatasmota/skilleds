@@ -22,43 +22,49 @@ import { SetStateAction, useState } from "react";
 
 import toast from "react-hot-toast";
 
-export const AddCourse = () => {
+export const AddBook = () => {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [author, setAuthor] = useState("");
   const [link, setLink] = useState("");
+  const [subject, setSubject] = useState("");
+  const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
 
-  const addCourse = async (e: React.FormEvent<HTMLFormElement>) => {
+  const addBook = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const res = await fetch("/api/courses", {
+      const res = await fetch("/api/books", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: title,
+          author: author,
           description: description,
           link: link,
+          subject: subject,
           status: status,
         }),
       });
 
       if (res.ok) {
-        console.log("Course added");
-        toast.success("Course added");
+        console.log("Book added");
+        toast.success("Book added");
         setTitle("");
+        setAuthor("");
+        setSubject("");
         setDescription("");
         setLink("");
         setStatus("");
         window.location.reload();
       } else {
-        toast.error("Error adding course");
-        console.log("Error adding course");
+        toast.error("Error adding book");
+        console.log("Error adding book");
       }
     } catch (error) {
-      toast.error("Error adding course");
-      console.log("Error adding course", error);
+      toast.error("Error adding book");
+      console.log("Error adding book", error);
     }
   };
 
@@ -67,14 +73,14 @@ export const AddCourse = () => {
       <DialogTrigger asChild>
         <Button variant="success">
           <PlusCircle className="mr-2" />
-          Add Course
+          Add Book
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px]">
-        <form onSubmit={addCourse}>
+        <form onSubmit={addBook}>
           <DialogHeader className="pb-4">
-            <DialogTitle>Add Course</DialogTitle>
-            <DialogDescription>Add a new course to your list</DialogDescription>
+            <DialogTitle>Add Book</DialogTitle>
+            <DialogDescription>Add a new book to your list</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-2 items-center gap-4">
@@ -83,10 +89,22 @@ export const AddCourse = () => {
               </Label>
               <Input
                 id="title"
-                placeholder="Mastering JavaScript"
+                placeholder="Clean Code"
                 className="col-span-3"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="author" className="opacity-60">
+                Author
+              </Label>
+              <Input
+                id="author"
+                placeholder="John Doe"
+                className="col-span-3"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
@@ -95,7 +113,7 @@ export const AddCourse = () => {
               </Label>
               <Input
                 id="description"
-                placeholder="A complete JavaScript course with 5 projects"
+                placeholder="Applying clean code principles to real world projects"
                 className="col-span-3"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -106,8 +124,8 @@ export const AddCourse = () => {
                 Link
               </Label>
               <Input
-                id="username"
-                placeholder="Course url"
+                id="link"
+                placeholder="Book url"
                 className="col-span-3"
                 value={link}
                 onChange={(e) => setLink(e.target.value)}
@@ -129,10 +147,32 @@ export const AddCourse = () => {
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="doing">Doing</SelectItem>
-                    <SelectItem value="willdo">Will Do</SelectItem>
-                    <SelectItem value="applied">Applied</SelectItem>
-                    <SelectItem value="wanttodo">Want to do</SelectItem>
+                    <SelectItem value="done">Done</SelectItem>
+                    <SelectItem value="to-read">To Read</SelectItem>
+                    <SelectItem value="reading">Reading</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex flex-col space-y-2.5">
+                <Label htmlFor="subject" className="opacity-60">
+                  Subject
+                </Label>
+                <Select
+                  value={subject}
+                  onValueChange={(value: SetStateAction<string>) =>
+                    setSubject(value)
+                  }
+                >
+                  <SelectTrigger id="Subject">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent position="popper">
+                    <SelectItem value="programming">Programming</SelectItem>
+                    <SelectItem value="personal-life">Personal Life</SelectItem>
+                    <SelectItem value="finance">Finance</SelectItem>
+                    <SelectItem value="technology">Technology</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface ConfirmationModalProps {
@@ -33,8 +34,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ onConfirm }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" onClick={handleDeleteClick}>
-          Delete Course
+        <Button size="sm" variant="destructive" onClick={handleDeleteClick}>
+          <Trash2 className="w-4 h-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

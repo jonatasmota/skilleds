@@ -13,18 +13,16 @@ export const Navbar = () => {
   return (
     <div
       className={cn(
-        "z-50 bg-background fixed top-0 flex justify-between items-center w-full p-6",
+        "z-50 bg-background fixed top-0 flex justify-between items-center w-full p-6 h-16",
         scrolled && "border-b shadow-sm"
       )}
     >
       <Logo />
       <div className="flex justify-between items-center">
         <NavbarRoutes />
-        <MobileSidebar />
         <ModeToggle />
+        <MobileSidebar />
       </div>
     </div>
   );
 };
-
-export default Navbar;
