@@ -1,24 +1,16 @@
-/* eslint-disable react/jsx-key */
 "use client";
 
 import { useEffect, useState } from "react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { BookCheck, Bookmark, Layers3, Trash2 } from "lucide-react";
 import { AddBook } from "./_components/add-book";
-import toast from "react-hot-toast";
+import BookItem from "./_components/book-item";
+
 import SearchInput from "../_components/search";
 import { Pagination } from "../_components/pagination";
+
 import { Spinner } from "@/components/spinner-loading";
 
+import toast from "react-hot-toast";
 interface Book {
   id: string;
   author: string;
@@ -32,12 +24,9 @@ interface Book {
 
 const Books = () => {
   const [books, setBooks] = useState<Book[]>([]);
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
-
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
 
   const bookFetch = async () => {
@@ -113,13 +102,9 @@ const Books = () => {
       case "done":
         return "Done";
       default:
-        return status; // fallback to the original status if not recognized
+        return status;
     }
   };
-
-  // useEffect(() => {
-  //   bookFetch();
-  // }, []);
 
   const getStatuses = () =>
     Array.from(new Set(filteredBooks.map((book) => book.status)));
@@ -148,48 +133,12 @@ const Books = () => {
                 {currentItems
                   .filter((book) => book.status === status)
                   .map((book) => (
-                    <Card
+                    <BookItem
                       key={book._id}
-                      className="rounded-none first:mt-0 first:rounded-t-lg last:rounded-b-lg"
-                    >
-                      <CardHeader>
-                        <CardTitle>{book.title}</CardTitle>
-                        <CardDescription>{book.author}</CardDescription>
-                      </CardHeader>
-
-                      <CardFooter className="flex justify-between">
-                        <Button variant="destructive">
-                          <Trash2 className="h-5 w-5" />
-                        </Button>
-                        <div className="inline-flex gap-2">
-                          <Button
-                            variant="outline"
-                            onClick={() =>
-                              handleStatusChange(book._id, "reading")
-                            }
-                            disabled={book.status === "reading"}
-                          >
-                            <Bookmark className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() =>
-                              handleStatusChange(book._id, "to-read")
-                            }
-                            disabled={book.status === "to-read"}
-                          >
-                            <Layers3 className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() => handleStatusChange(book._id, "done")}
-                            disabled={book.status === "done"}
-                          >
-                            <BookCheck className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </CardFooter>
-                    </Card>
+                      book={book}
+                      _id={book._id}
+                      onStatusChange={handleStatusChange}
+                    />
                   ))}
               </div>
             </div>

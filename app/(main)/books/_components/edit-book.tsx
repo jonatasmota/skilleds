@@ -1,3 +1,5 @@
+import { SetStateAction, useEffect, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,8 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { Pencil } from "lucide-react";
-import { SetStateAction, useEffect, useState } from "react";
 
 import toast from "react-hot-toast";
 
@@ -32,7 +34,7 @@ interface EditBookModalProps {
   bookSubject: string;
 }
 
-export const EditCourseModal = ({
+export const EditBookModal = ({
   bookAuthor,
   bookDescription,
   bookId,
@@ -79,7 +81,7 @@ export const EditCourseModal = ({
   const editBook = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const res = await fetch(`/api/books/${bookId}`, {
+      const res = await fetch(`/api/books/${bookId}/edit`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +114,7 @@ export const EditCourseModal = ({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button size="sm" variant="outline">
-          <Pencil className="w-4 h-4" />
+          <Pencil className="w-5 h-5" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px]">
@@ -139,7 +141,7 @@ export const EditCourseModal = ({
                 Author
               </Label>
               <Input
-                id="Author"
+                id="author"
                 placeholder="Simon Sinek"
                 className="col-span-3"
                 value={newAuthor}
@@ -152,7 +154,7 @@ export const EditCourseModal = ({
               </Label>
               <Input
                 id="description"
-                placeholder="A complete JavaScript course with 5 projects"
+                placeholder="A complete JavaScript Book with 5 projects"
                 className="col-span-3"
                 value={newDescription}
                 onChange={(e) => setNewDescription(e.target.value)}
@@ -163,7 +165,7 @@ export const EditCourseModal = ({
                 Link
               </Label>
               <Input
-                id="username"
+                id="link"
                 placeholder="Book url"
                 className="col-span-3"
                 value={newLink}
@@ -190,6 +192,19 @@ export const EditCourseModal = ({
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="subject" className="text-right">
+                Subject
+              </Label>
+              <Input
+                id="subject"
+                placeholder="Subject"
+                className="col-span-3"
+                value={newSubject}
+                onChange={(e) => setNewSubject(e.target.value)}
+              />
             </div>
           </div>
           <DialogFooter>

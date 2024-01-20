@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CourseItem } from "./_components/course-item";
-import { AddCourse } from "./_components/course-modal";
+import { AddCourse } from "./_components/add-course";
 import { Pagination } from "../_components/pagination";
 import { Spinner } from "@/components/spinner-loading";
 import SearchInput from "../_components/search";

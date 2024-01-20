@@ -1,3 +1,5 @@
+import { SetStateAction, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,8 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { PlusCircle } from "lucide-react";
-import { SetStateAction, useState } from "react";
 
 import toast from "react-hot-toast";
 
@@ -154,27 +156,17 @@ export const AddBook = () => {
                 </Select>
               </div>
 
-              <div className="flex flex-col space-y-2.5">
-                <Label htmlFor="subject" className="opacity-60">
+              <div className="grid grid-cols-2 items-center gap-4">
+                <Label htmlFor="link" className="opacity-60">
                   Subject
                 </Label>
-                <Select
+                <Input
+                  id="subject"
+                  placeholder="Subject"
+                  className="col-span-3"
                   value={subject}
-                  onValueChange={(value: SetStateAction<string>) =>
-                    setSubject(value)
-                  }
-                >
-                  <SelectTrigger id="Subject">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="programming">Programming</SelectItem>
-                    <SelectItem value="personal-life">Personal Life</SelectItem>
-                    <SelectItem value="finance">Finance</SelectItem>
-                    <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                  onChange={(e) => setSubject(e.target.value)}
+                />
               </div>
             </div>
           </div>

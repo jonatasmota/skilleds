@@ -11,11 +11,11 @@ import {
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
-interface ConfirmationModalProps {
+interface DeleteBookModalProps {
   onConfirm: () => void;
 }
 
-const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ onConfirm }) => {
+const DeleteBookModal: React.FC<DeleteBookModalProps> = ({ onConfirm }) => {
   const [open, setOpen] = useState(false);
 
   const handleDeleteCancel = () => {
@@ -35,7 +35,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ onConfirm }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm" variant="destructive" onClick={handleDeleteClick}>
-          <Trash2 className="w-4 h-4" />
+          <Trash2 className="w-5 h-5" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -59,4 +59,4 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ onConfirm }) => {
   );
 };
 
-export default ConfirmationModal;
+export default DeleteBookModal;

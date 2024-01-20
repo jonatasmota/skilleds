@@ -11,10 +11,10 @@ import {
 import Link from "next/link";
 
 import toast from "react-hot-toast";
-import ConfirmationModal from "./modal-delete-confirmation";
 import { Badge } from "@/components/ui/badge";
-import { EditCourseModal } from "./course-edit";
+import { EditCourseModal } from "./edit-course";
 import { ExternalLink } from "lucide-react";
+import DeleteCourseModal from "./delete-course";
 
 interface CourseItemProps {
   title: string;
@@ -96,7 +96,7 @@ export const CourseItem = ({
               courseId={_id}
             />
 
-            <ConfirmationModal onConfirm={confirmDelete} />
+            <DeleteCourseModal onConfirm={confirmDelete} />
           </div>
         </CardFooter>
       </Card>
