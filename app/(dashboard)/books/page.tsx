@@ -11,6 +11,7 @@ import { Pagination } from "../_components/pagination";
 import { Spinner } from "@/components/spinner-loading";
 
 import toast from "react-hot-toast";
+
 interface Book {
   id: string;
   author: string;
@@ -26,7 +27,7 @@ const Books = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
 
   const bookFetch = async () => {
@@ -91,7 +92,9 @@ const Books = () => {
 
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentItems = filteredBooks.slice(firstItemIndex, lastItemIndex);
+  const currentItems = filteredBooks
+    ? filteredBooks.slice(firstItemIndex, lastItemIndex)
+    : [];
 
   const getStatusDisplayName = (status: string): string => {
     switch (status) {
@@ -117,7 +120,7 @@ const Books = () => {
       </div>
 
       {isLoading && (
-        <div className="w-fit flex items-center justify-center">
+        <div className="flex items-center justify-center h-screen">
           <Spinner />
         </div>
       )}
@@ -146,14 +149,16 @@ const Books = () => {
         </>
       )}
 
-      <div className="text-center md:container">
-        <Pagination
-          totalItems={filteredBooks.length}
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </div>
+      {filteredBooks && itemsPerPage < filteredBooks.length && (
+        <div className="text-center md:container pt-8">
+          <Pagination
+            totalItems={filteredBooks.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import connectMongoDB from "@/lib/mongodb";
-import Book from "@/models/books";
+import Idea from "@/models/ideas";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -14,7 +14,7 @@ export async function POST(req: Request, res: Response) {
 
     await connectMongoDB();
 
-    await Book.create({
+    await Idea.create({
       userId,
       subject,
       title,
@@ -25,7 +25,7 @@ export async function POST(req: Request, res: Response) {
     });
 
     return NextResponse.json(
-      { message: "Book created successfully" },
+      { message: "Idea created successfully" },
       { status: 201 }
     );
   } catch (error) {
@@ -43,12 +43,12 @@ export async function GET(req: Request, res: Response) {
 
     await connectMongoDB();
 
-    const books = await Book.find({ userId });
+    const ideas = await Idea.find({ userId });
 
-    return NextResponse.json(books);
+    return NextResponse.json(ideas);
   } catch (error) {
     console.log(error);
-    return NextResponse.json("Error getting books", { status: 500 });
+    return NextResponse.json("Error getting ideas", { status: 500 });
   }
 }
 
@@ -73,7 +73,7 @@ export async function PUT(request, { params }) {
 
     await connectMongoDB();
 
-    const updatedBook = await Book.findByIdAndUpdate(
+    const updatedIdea = await Idea.findByIdAndUpdate(
       id,
       {
         title,
@@ -86,10 +86,10 @@ export async function PUT(request, { params }) {
       { new: true }
     );
 
-    console.log("Book updated", updatedBook); // Adicione este log
+    console.log("Idea updated", updatedIdea); // Adicione este log
 
     return NextResponse.json(
-      { message: "Book updated", book: updatedBook },
+      { message: "Idea updated", book: updatedIdea },
       { status: 200 }
     );
   } catch (error) {
@@ -109,7 +109,7 @@ export async function DELETE(request: {
 
   await connectMongoDB();
 
-  await Book.findByIdAndDelete({ _id: id, userId });
+  await Idea.findByIdAndDelete({ _id: id, userId });
 
-  return NextResponse.json({ message: "Book deleted successfully" });
+  return NextResponse.json({ message: "Idea deleted successfully" });
 }

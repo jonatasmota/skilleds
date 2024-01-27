@@ -1,3 +1,5 @@
+import { SetStateAction, useEffect, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,8 +19,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+// import { useAuth } from "@clerk/nextjs";
 import { Pencil } from "lucide-react";
-import { SetStateAction, useEffect, useState } from "react";
+// import { redirect } from "next/navigation";
 
 import toast from "react-hot-toast";
 
@@ -42,6 +46,12 @@ export const EditCourseModal = ({
   const [newLink, setNewLink] = useState(courseLink || "");
   const [newStatus, setNewStatus] = useState(courseStatus || "");
   const [isOpen, setIsOpen] = useState(false);
+
+  // const { userId } = useAuth();
+
+  // if (!userId) {
+  //   redirect("/");
+  // }
 
   useEffect(() => {
     const fetchCourseData = async () => {

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -8,19 +9,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import Link from "next/link";
-
-import toast from "react-hot-toast";
-import { Badge } from "@/components/ui/badge";
-import { EditCourseModal } from "./edit-course";
 import { ExternalLink } from "lucide-react";
+import toast from "react-hot-toast";
+
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+
+import { EditCourseModal } from "./edit-course";
 import DeleteCourseModal from "./delete-course";
+import React from "react";
 
 interface CourseItemProps {
-  title: string;
-  description: string;
-  link: string;
-  status: string;
+  course: {
+    title: string;
+    description: string;
+    link: string;
+    status: string;
+    _id: string;
+  };
   _id: string;
 }
 
@@ -39,13 +45,7 @@ const getStatusVariant = (status: string) => {
   }
 };
 
-export const CourseItem = ({
-  title,
-  description,
-  link,
-  status,
-  _id,
-}: CourseItemProps) => {
+const CourseItem: React.FC<CourseItemProps> = ({ course, _id }) => {
   const confirmDelete = async () => {
     try {
       const res = await fetch(`/api/courses?id=${_id}`, {
@@ -67,10 +67,13 @@ export const CourseItem = ({
 
   return (
     <>
-      <Card className="w-[350px]">
+      <Card
+        key={course._id}
+        className="rounded-none first:mt-0 first:rounded-t-lg last:rounded-b-lg"
+      >
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
+          <CardTitle>{course.title}</CardTitle>
+          <CardDescription>{course.description}</CardDescription>
         </CardHeader>
         <CardContent>
           <Badge variant={getStatusVariant(status) || "secondary"}>
@@ -79,7 +82,11 @@ export const CourseItem = ({
         </CardContent>
         <CardFooter className="flex justify-between">
           <Link
-            href={link.startsWith("http") ? link : `http://${link}`}
+            href={
+              course.link.startsWith("http")
+                ? course.link
+                : `http://${course.link}`
+            }
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -89,11 +96,11 @@ export const CourseItem = ({
           </Link>
           <div className="flex gap-2">
             <EditCourseModal
-              courseTitle={title}
-              courseDescription={description}
-              courseLink={link}
-              courseStatus={status}
-              courseId={_id}
+              courseTitle={course.title}
+              courseDescription={course.description}
+              courseLink={course.link}
+              courseStatus={course.status}
+              courseId={course._id}
             />
 
             <DeleteCourseModal onConfirm={confirmDelete} />
@@ -103,3 +110,5 @@ export const CourseItem = ({
     </>
   );
 };
+
+export default CourseItem;

@@ -1,41 +1,63 @@
 import connectMongoDB from "@/lib/mongodb";
 import Course from "@/models/courses";
+import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
-  const { title, description, link, status } = await req.json();
+  try {
+    const { userId } = auth();
+    const { title, description, link, status } = await req.json();
 
-  await connectMongoDB();
+    if (!userId)
+      return new NextResponse("User not authenticated", { status: 401 });
 
-  await Course.create({
-    title,
-    description,
-    link,
-    status,
-  });
+    await connectMongoDB();
 
-  return NextResponse.json(
-    { message: "Course created successfully" },
-    { status: 201 }
-  );
+    await Course.create({
+      userId,
+      title,
+      description,
+      link,
+      status,
+    });
+
+    return NextResponse.json(
+      { message: "Course created successfully" },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json("Error creating course", { status: 500 });
+  }
 }
 
 export async function GET(req: Request, res: Response) {
-  await connectMongoDB();
+  try {
+    const { userId } = auth();
 
-  const courses = await Course.find({});
+    if (!userId)
+      return new NextResponse("User not authenticated", { status: 401 });
 
-  return NextResponse.json(courses);
+    await connectMongoDB();
+
+    const courses = await Course.find({ userId });
+
+    return NextResponse.json(courses);
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json("Error getting courses", { status: 500 });
+  }
 }
 
 export async function DELETE(request: {
   nextUrl: { searchParams: { get: (arg0: string) => any } };
 }) {
   const id = request.nextUrl.searchParams.get("id");
+  const { userId } = auth();
 
   await connectMongoDB();
 
-  await Course.findByIdAndDelete(id);
+  await Course.findByIdAndDelete({ _id: id, userId });
 
   return NextResponse.json({ message: "Course deleted successfully" });
 }
