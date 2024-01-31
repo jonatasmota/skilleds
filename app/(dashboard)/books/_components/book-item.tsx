@@ -2,19 +2,14 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
-import { BookCheck, Bookmark, Layers3 } from "lucide-react";
+import { BookOpen, BookmarkCheck, LibraryBig } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { EditBookModal } from "./edit-book";
 import DeleteBookModal from "./delete-book";
+import { formatDate } from "@/lib/utils";
 
 interface BookItemProps {
   book: {
@@ -25,6 +20,7 @@ interface BookItemProps {
     subject: string;
     description: string;
     link: string;
+    createdAt: string;
   };
   _id: string;
   onStatusChange: (id: string, newStatus: string) => void;
@@ -53,16 +49,43 @@ const BookItem: React.FC<BookItemProps> = ({ book, _id, onStatusChange }) => {
   return (
     <Card
       key={book._id}
-      className="rounded-none first:mt-0 first:rounded-t-lg last:rounded-b-lg"
+      className="rounded-none flex items-center justify-between p-4 hover:shadow-md transition cursor-pointer first:mt-0 first:rounded-t-lg last:rounded-b-lg"
     >
-      <CardHeader>
-        <CardTitle>{book.title}</CardTitle>
-        <CardDescription>{book.author}</CardDescription>
-      </CardHeader>
+      <div className="flex flex-col gap-y-2">
+        <h2 className="font-semibold">
+          {book.title} <span> ({book.author})</span>
+        </h2>
+        <p className="text-sm text-muted-foreground">{book.description}</p>
+        <p className="text-sm text-muted-foreground">
+          {formatDate(book.createdAt)}
+        </p>
+        <div className="inline-flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => onStatusChange(book._id, "reading")}
+            disabled={book.status === "reading"}
+          >
+            <BookOpen className="h-4 w-4 text-blue-500" />
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => onStatusChange(book._id, "to-read")}
+            disabled={book.status === "to-read"}
+          >
+            <LibraryBig className="h-4 w-4 text-red-500" />
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => onStatusChange(book._id, "done")}
+            disabled={book.status === "done"}
+          >
+            <BookmarkCheck className="h-4 w-4 text-green-500" />
+          </Button>
+        </div>
+      </div>
 
-      <CardFooter className="flex justify-between">
+      <div className="flex">
         <div className="flex gap-2">
-          <DeleteBookModal onConfirm={confirmDelete} />
           <EditBookModal
             bookAuthor={book.author}
             bookDescription={book.description}
@@ -72,31 +95,9 @@ const BookItem: React.FC<BookItemProps> = ({ book, _id, onStatusChange }) => {
             bookSubject={book.subject}
             bookTitle={book.title}
           />
+          <DeleteBookModal onConfirm={confirmDelete} />
         </div>
-        <div className="inline-flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => onStatusChange(book._id, "reading")}
-            disabled={book.status === "reading"}
-          >
-            <Bookmark className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => onStatusChange(book._id, "to-read")}
-            disabled={book.status === "to-read"}
-          >
-            <Layers3 className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => onStatusChange(book._id, "done")}
-            disabled={book.status === "done"}
-          >
-            <BookCheck className="h-4 w-4" />
-          </Button>
-        </div>
-      </CardFooter>
+      </div>
     </Card>
   );
 };

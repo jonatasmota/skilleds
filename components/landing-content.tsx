@@ -1,27 +1,35 @@
 "use client";
 
+import { LibraryBig, Lightbulb, List } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 const features = [
   {
     title: "Add Courses",
-    description: "Add your courses and keep track of your notes.",
-    icon: "📚",
+    description: "Knowledge is power. Increase your power!",
+    icon: (
+      <div className="w-fit p-2 bg-blue-500/10 rounded-full transition">
+        <List size={40} className="text-blue-500" />
+      </div>
+    ),
   },
   {
     title: "Organize your Booklist",
-    description: "Keep track of the books you need to read.",
-    icon: "📖",
+    description: "Reading is a great habit to have and to keep!",
+    icon: (
+      <div className="w-fit p-2 bg-red-500/10 rounded-full transition">
+        <LibraryBig size={32} className=" text-red-500" />
+      </div>
+    ),
   },
   {
     title: "Keep track of your ideas",
-    description: "Keep track of your ideas.",
-    icon: "💡",
-  },
-  {
-    title: "Keep track of your ideas",
-    description: "Keep track of your ideas.",
-    icon: "💡",
+    description: "Don't let your ideas get lost. Write them down!",
+    icon: (
+      <div className="w-fit p-2 bg-yellow-500/10 rounded-full transition">
+        <Lightbulb size={32} className=" text-yellow-500" />
+      </div>
+    ),
   },
 ];
 
@@ -29,14 +37,14 @@ const LandingContent = () => {
   return (
     <div className="px-10 pb-20">
       <h2 className="text-center text-4xl font-extrabold mb-10">Features</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="flex flex-col md:flex-row justify-center gap-4 items-center">
         {features.map((feature) => (
-          <Card key={feature.title}>
+          <Card key={feature.title} className="w-[280px] h-[180px]">
             <CardHeader>
               <CardTitle className="flex items-center gap-x-2">
-                <div>
-                  <p className="text-lg">{feature.icon}</p>
-                  <p className="text-sm">{feature.title}</p>
+                <div className="flex items-center">
+                  <p className="mb-2">{feature.icon}</p>
+                  <p className="text-sm ml-2">{feature.title}</p>
                 </div>
               </CardTitle>
               <CardContent className="pt-4 px-0">

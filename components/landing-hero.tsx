@@ -28,7 +28,7 @@ export const LandingHero = () => {
       </div>
 
       <div className="text-sm md:text-xl font-light text-zinc-400">
-        Keep track of your notes, ideas, and more.
+        Keep track of your books, courses, ideas, and more.
       </div>
       <div>
         <Link href={isSignedIn ? "/dashboard" : "/sign-up"}>
@@ -39,7 +39,7 @@ export const LandingHero = () => {
       </div>
 
       <div className="text-zinc-400 text-xs md:text-sm font-normal">
-        Free forever. No credit card required.
+        This application is free and open source.
       </div>
     </div>
   );

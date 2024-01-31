@@ -1,13 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 import { ExternalLink } from "lucide-react";
 import toast from "react-hot-toast";
@@ -69,31 +62,30 @@ const CourseItem: React.FC<CourseItemProps> = ({ course, _id }) => {
     <>
       <Card
         key={course._id}
-        className="rounded-none first:mt-0 first:rounded-t-lg last:rounded-b-lg"
+        className="rounded-none flex items-center justify-between p-4 hover:shadow-md transition cursor-pointer first:mt-0 first:rounded-t-lg last:rounded-b-lg"
       >
-        <CardHeader>
-          <CardTitle>{course.title}</CardTitle>
-          <CardDescription>{course.description}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Badge variant={getStatusVariant(status) || "secondary"}>
-            {status}
-          </Badge>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Link
-            href={
-              course.link.startsWith("http")
-                ? course.link
-                : `http://${course.link}`
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Button size="sm" variant="success">
-              <ExternalLink className="h-5 w-5" />
-            </Button>
-          </Link>
+        <div className="flex flex-col gap-y-2">
+          <h2 className="font-semibold">{course.title}</h2>
+          <p className="text-sm text-muted-foreground">{course.description}</p>
+          <div className="flex items-center gap-6">
+            <Badge className="w-fit">{course.status}</Badge>
+            <Link
+              href={
+                course.link.startsWith("http")
+                  ? course.link
+                  : `http://${course.link}`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button size="sm" variant="success">
+                <ExternalLink className="h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="flex gap-x-4">
           <div className="flex gap-2">
             <EditCourseModal
               courseTitle={course.title}
@@ -105,7 +97,7 @@ const CourseItem: React.FC<CourseItemProps> = ({ course, _id }) => {
 
             <DeleteCourseModal onConfirm={confirmDelete} />
           </div>
-        </CardFooter>
+        </div>
       </Card>
     </>
   );

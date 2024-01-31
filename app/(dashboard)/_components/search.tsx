@@ -21,8 +21,8 @@ const SearchInput = ({ onSearchChange }: SearchInputProps) => {
       <Input
         value={value}
         onChange={handleSearchChange}
-        className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200"
-        placeholder="Search for a course"
+        className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200 text-slate-600"
+        placeholder="Search"
       />
     </div>
   );

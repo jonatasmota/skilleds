@@ -17,7 +17,7 @@ const Logo = () => {
           poppins.className
         )}
       >
-        skilleds
+        skilleds<span className="font-extrabold text-red-700">*</span>
       </h1>
     </Link>
   );

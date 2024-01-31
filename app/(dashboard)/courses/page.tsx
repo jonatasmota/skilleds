@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
+import CourseItem from "./_components/course-item";
 import SearchInput from "../_components/search";
 import { Pagination } from "../_components/pagination";
+import { AddCourse } from "./_components/add-course";
 
 import { Spinner } from "@/components/spinner-loading";
+import { Button } from "@/components/ui/button";
 
 import toast from "react-hot-toast";
-import { AddCourse } from "./_components/add-course";
-import CourseItem from "./_components/course-item";
+import { File } from "lucide-react";
 
 interface Course {
   id: string;
@@ -44,39 +47,6 @@ const Courses = () => {
     }
   };
 
-  // const handleStatusChange = async (id: string, newStatus: string) => {
-  //   try {
-  //     console.log("Changing status...", id, newStatus);
-
-  //     const res = await fetch(`/api/Courses/${id}`, {
-  //       method: "PUT",
-  //       body: JSON.stringify({ status: newStatus }),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-
-  //     if (res.ok) {
-  //       setCourses((prevCourses) =>
-  //         prevCourses.map((Course) =>
-  //           Course._id === id ? { ...Course, status: newStatus } : Course
-  //         )
-  //       );
-
-  //       setFilteredCourses((prevCourses) =>
-  //         prevCourses.map((Course) =>
-  //           Course._id === id ? { ...Course, status: newStatus } : Course
-  //         )
-  //       );
-  //     } else {
-  //       console.log("Error changing status");
-  //       toast.error("Error changing status");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error changing status:", error);
-  //   }
-  // };
-
   useEffect(() => {
     courseFetch();
   }, [currentPage]);
@@ -95,45 +65,53 @@ const Courses = () => {
     ? filteredCourses.slice(firstItemIndex, lastItemIndex)
     : [];
 
-  // const getStatusDisplayName = (status: string): string => {
-  //   switch (status) {
-  //     case "to-read":
-  //       return "To Read";
-  //     case "reading":
-  //       return "Reading";
-  //     case "done":
-  //       return "Done";
-  //     default:
-  //       return status;
-  //   }
-  // };
-
-  // const getStatuses = () =>
-  //   Array.from(new Set(filteredCourses.map((Course) => Course.status)));
-
   return (
-    <div className="h-full container p-4">
-      <div className="mt-20 justify-center gap-4 md:mt-0 flex flex-1 md:justify-between">
+    <div className="h-full container">
+      <div className="mb-8 space-y-4 flex flex-col md:flex-row xl:flex-row justify-between">
+        <div className="grid gap-1">
+          <h2 className="text-2xl md:text-4xl font-bold">Your courses</h2>
+          <p className="text-muted-foreground font-light text-sm md:text-lg">
+            Here you can add and find all your courses.
+          </p>
+        </div>
+
         <AddCourse />
-        <SearchInput onSearchChange={handleSearchChange} />
       </div>
 
-      {isLoading && (
-        <div className="flex items-center justify-center h-screen">
-          <Spinner />
+      {currentItems.length < 1 && !isLoading ? (
+        <div className="flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+            <File className="w-10 h-10 text-primary-500" />
+          </div>
+          <h2 className="text-xl mt-6 font-semibold">
+            You don&apos;t have added any courses yet
+          </h2>
+          <p className="mb-8 text-center text-sm text-muted-foreground leading-6">
+            You can add a new course by clicking the button below.
+          </p>
+          <Button variant="success">
+            <Link href="/courses/add">Add a new course</Link>
+          </Button>
         </div>
-      )}
-
-      {!isLoading && (
+      ) : (
         <>
+          <div className="mt-8 justify-center gap-4 md:mt-0 flex flex-1 md:justify-between">
+            <SearchInput onSearchChange={handleSearchChange} />
+          </div>
           <div className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
               {currentItems.map((course) => (
                 <CourseItem key={course._id} course={course} _id={course._id} />
               ))}
             </div>
           </div>
         </>
+      )}
+
+      {isLoading && (
+        <div className="flex items-center justify-center h-screen">
+          <Spinner />
+        </div>
       )}
 
       {filteredCourses && itemsPerPage < filteredCourses.length && (

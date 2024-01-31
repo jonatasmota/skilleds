@@ -4,11 +4,10 @@ const ideasSchema = new Schema(
   {
     userId: { type: String, required: true },
     id: String,
-    subject: String,
-    title: String,
-    description: String,
-    textarea: String,
-    imgUrl: String,
+    subject: { type: String, required: true },
+    title: { type: String, required: true },
+    textarea: { type: String, required: true },
+    imgUrl: { type: String, required: true },
   },
   {
     timestamps: true,

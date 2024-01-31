@@ -6,8 +6,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request, res: Response) {
   try {
     const { userId } = auth();
-    const { subject, title, author, description, link, status } =
-      await req.json();
+    const { subject, title, imgUrl, textarea } = await req.json();
 
     if (!userId)
       return new NextResponse("User not authenticated", { status: 401 });
@@ -18,10 +17,8 @@ export async function POST(req: Request, res: Response) {
       userId,
       subject,
       title,
-      author,
-      description,
-      link,
-      status,
+      imgUrl,
+      textarea,
     });
 
     return NextResponse.json(
@@ -62,14 +59,10 @@ export async function PUT(request, { params }) {
 
     const {
       newTitle: title,
-      newAuthor: author,
-      newDescription: description,
-      newLink: link,
-      newStatus: status,
+      newTextarea: textarea,
+      newImgUrl: imgUrl,
       newSubject: subject,
     } = await request.json();
-
-    console.log("Updating book...", id, title, status);
 
     await connectMongoDB();
 
@@ -77,10 +70,8 @@ export async function PUT(request, { params }) {
       id,
       {
         title,
-        description,
-        link,
-        status,
-        author,
+        textarea,
+        imgUrl,
         subject,
       },
       { new: true }
