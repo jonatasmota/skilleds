@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import {
   Book,
+  Laptop,
   LayoutDashboard,
   Lightbulb,
   NotebookText,
@@ -82,6 +83,23 @@ const SidebarRoutes = () => {
         <div className="flex items-center flex-1">
           <Lightbulb className="h-5 w-5 mr-3 text-yellow-500" />
           Ideas
+        </div>
+      </Link>
+
+      <Link
+        href="/boards"
+        className={cn(
+          "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition",
+          "dark:hover:text-white dark:hover:bg-white/10",
+          "hover:text-black hover:bg-black/10",
+          pathname === "/boards"
+            ? "dark:text-white dark:bg-white/10 text-black bg-black/10"
+            : "text-zinc-400"
+        )}
+      >
+        <div className="flex items-center flex-1">
+          <Laptop className="h-5 w-5 mr-3 text-yellow-500" />
+          Boards
         </div>
       </Link>
 

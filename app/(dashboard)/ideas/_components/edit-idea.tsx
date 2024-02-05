@@ -19,8 +19,8 @@ import toast from "react-hot-toast";
 import { Textarea } from "@/components/ui/textarea";
 
 interface EditIdeaModalProps {
-  ideaTitle: string;
   ideaId: string;
+  ideaTitle: string;
   ideaSubject: string;
   ideaImgUrl: string;
   ideaTextarea: string;
@@ -115,7 +115,7 @@ export const EditIdeaModal = ({
               <Input
                 id="title"
                 className="col-span-3"
-                value={newTitle}
+                defaultValue={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
               />
             </div>
@@ -126,6 +126,7 @@ export const EditIdeaModal = ({
               <Textarea
                 id="textarea"
                 className="col-span-3"
+                rows={12}
                 value={newTextarea}
                 onChange={(e) => setNewTextarea(e.target.value)}
               />
@@ -137,9 +138,8 @@ export const EditIdeaModal = ({
               </Label>
               <Input
                 id="imgUrl"
-                placeholder="Idea img url"
                 className="col-span-3"
-                value={newImgUrl}
+                defaultValue={newImgUrl}
                 onChange={(e) => setNewImgUrl(e.target.value)}
               />
             </div>
@@ -150,9 +150,8 @@ export const EditIdeaModal = ({
               </Label>
               <Input
                 id="subject"
-                placeholder="Subject"
                 className="col-span-3"
-                value={newSubject}
+                defaultValue={newSubject}
                 onChange={(e) => setNewSubject(e.target.value)}
               />
             </div>

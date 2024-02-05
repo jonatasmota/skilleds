@@ -1,7 +1,13 @@
 "use client";
 
 import { LibraryBig, Lightbulb, List } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 
 const features = [
   {
@@ -43,7 +49,7 @@ const LandingContent = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-x-2">
                 <div className="flex items-center">
-                  <p className="mb-2">{feature.icon}</p>
+                  <span className="mb-2">{feature.icon}</span>
                   <p className="text-sm ml-2">{feature.title}</p>
                 </div>
               </CardTitle>

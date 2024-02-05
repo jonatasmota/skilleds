@@ -1,45 +1,35 @@
 // Importações necessárias
 
 import connectMongoDB from "@/lib/mongodb";
-import Book from "@/models/books";
+import Idea from "@/models/ideas";
 import { NextResponse } from "next/server";
 
 export async function PUT(request, { params }) {
   try {
     const { id } = params;
 
-    const {
-      newTitle,
-      newAuthor,
-      newDescription,
-      newLink,
-      newStatus,
-      newSubject,
-    } = await request.json();
+    const { newTitle, newTextarea, newImgUrl, newSubject } =
+      await request.json();
 
     await connectMongoDB();
 
-    const updatedBook = await Book.findByIdAndUpdate(
+    const updatedIdea = await Idea.findByIdAndUpdate(
       id,
       {
         title: newTitle,
-        author: newAuthor,
-        description: newDescription,
-        link: newLink,
-        status: newStatus,
+        textarea: newTextarea,
+        imgUrl: newImgUrl,
         subject: newSubject,
       },
       { new: true }
     );
 
-    console.log("Book updated", updatedBook);
-
     return NextResponse.json(
-      { message: "Book updated", book: updatedBook },
+      { message: "Idea updated", idea: updatedIdea },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error updating book:", error);
+    console.error("Error updating idea:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
