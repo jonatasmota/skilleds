@@ -39,7 +39,7 @@ const BoardItem: React.FC<BoardItemProps> = ({ board, _id }) => {
   };
 
   return (
-    <Link href="/boards/board">
+    <Link href={`/boards/${board._id}`}>
       <Card
         key={board._id}
         className="rounded-none flex items-center justify-between p-4 hover:shadow-md transition cursor-pointer first:mt-0 first:rounded-t-lg last:rounded-b-lg"

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,40 +18,38 @@ import { useState } from "react";
 
 import toast from "react-hot-toast";
 
-export const AddBoard = () => {
+export const AddSection = ({ boardId }: { boardId: string }) => {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [position, setPosition] = useState("");
+  const [order, setOrder] = useState("");
 
-  const addBoard = async (e: React.FormEvent<HTMLFormElement>) => {
+  const addSection = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const res = await fetch("/api/boards", {
+      const res = await fetch("/api/sections", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: title,
-          description: description,
-          position: position,
+          order: order,
+          board: boardId,
         }),
       });
 
       if (res.ok) {
-        console.log("Board added");
-        toast.success("Board added");
+        console.log("Section added");
+        toast.success("Section added");
         setTitle("");
-        setDescription("");
-        setPosition("");
+        setOrder("");
         window.location.reload();
       } else {
-        toast.error("Error adding board");
-        console.log("Error adding board");
+        toast.error("Error adding section");
+        console.log("Error adding section");
       }
     } catch (error) {
-      toast.error("Error adding board");
-      console.log("Error adding board", error);
+      toast.error("Error adding section");
+      console.log("Error adding section", error);
     }
   };
 
@@ -58,14 +58,16 @@ export const AddBoard = () => {
       <DialogTrigger asChild>
         <Button variant="success">
           <PlusCircle className="mr-2" />
-          Add Board
+          Add Section
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px]">
-        <form onSubmit={addBoard}>
+        <form onSubmit={addSection}>
           <DialogHeader className="pb-4">
-            <DialogTitle>Add Board</DialogTitle>
-            <DialogDescription>Add a new board to your list</DialogDescription>
+            <DialogTitle>Add Section</DialogTitle>
+            <DialogDescription>
+              Add a new section to your board
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-2 items-center gap-4">
@@ -82,15 +84,15 @@ export const AddBoard = () => {
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="description" className="opacity-60">
-                Description
+              <Label htmlFor="order" className="opacity-60">
+                Order
               </Label>
               <Input
-                id="description"
-                placeholder="A complete JavaScript course with 5 projects"
+                id="order"
+                type="number"
                 className="col-span-3"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={order}
+                onChange={(e) => setOrder(e.target.value)}
                 required
               />
             </div>

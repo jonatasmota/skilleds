@@ -16,7 +16,7 @@ const SearchInput = ({ onSearchChange }: SearchInputProps) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative mx-auto md:mx-0 md:w-[300px]">
       <Search className="h-4 w-4 absolute top-3 left-3 text-slate-600" />
       <Input
         value={value}

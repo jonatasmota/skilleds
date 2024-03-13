@@ -31,6 +31,8 @@ const Courses = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [statusSearchPerformed, setStatusSearchPerformed] = useState(false);
 
   const courseFetch = async () => {
     setIsLoading(true);
@@ -56,6 +58,20 @@ const Courses = () => {
       course.title.toLowerCase().includes(searchValue.toLowerCase())
     );
     setFilteredCourses(filtered);
+    setStatusSearchPerformed(false);
+    setCurrentPage(1);
+  };
+
+  const handleStatusFilter = (status) => {
+    setSelectedStatus(status);
+    setStatusSearchPerformed(true);
+    let filtered;
+    if (status === "all" || status === null) {
+      filtered = courses;
+    } else {
+      filtered = courses.filter((course) => course.status === status);
+    }
+    setFilteredCourses(filtered);
     setCurrentPage(1);
   };
 
@@ -79,24 +95,68 @@ const Courses = () => {
       </div>
 
       {currentItems.length < 1 && !isLoading ? (
-        <div className="flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
-            <File className="w-10 h-10 text-primary-500" />
+        statusSearchPerformed ? (
+          <div className="flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+              <File className="w-10 h-10 text-primary-500" />
+            </div>
+            <h2 className="text-xl mt-6 font-semibold">
+              No courses found with that status
+            </h2>
+            <p className="mb-8 text-center text-sm text-muted-foreground leading-6">
+              You can return to the full list by clicking the button below.
+            </p>
+            <Button variant="success" onClick={() => handleStatusFilter("all")}>
+              Return to full list
+            </Button>
           </div>
-          <h2 className="text-xl mt-6 font-semibold">
-            You don&apos;t have added any courses yet
-          </h2>
-          <p className="mb-8 text-center text-sm text-muted-foreground leading-6">
-            You can add a new course by clicking the button below.
-          </p>
-          <Button variant="success">
-            <Link href="/courses/add">Add a new course</Link>
-          </Button>
-        </div>
+        ) : (
+          <div className="flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+              <File className="w-10 h-10 text-primary-500" />
+            </div>
+            <h2 className="text-xl mt-6 font-semibold">
+              You don&apos;t have added any courses yet
+            </h2>
+            <p className="mb-8 text-center text-sm text-muted-foreground leading-6">
+              You can add a new course by clicking the button below.
+            </p>
+            <Button variant="success">
+              <Link href="/courses/add">Add a new course</Link>
+            </Button>
+          </div>
+        )
       ) : (
         <>
-          <div className="mt-8 justify-center gap-4 md:mt-0 flex flex-1 md:justify-between">
+          <div className="flex flex-wrap justify-between gap-2 mt-4">
             <SearchInput onSearchChange={handleSearchChange} />
+
+            <div className="flex gap-x-2 pt-4 sm:pt-0 mx-auto md:mx-0">
+              <Button
+                onClick={() => handleStatusFilter("all")}
+                variant="outline"
+              >
+                All
+              </Button>
+              <Button
+                onClick={() => handleStatusFilter("doing")}
+                variant="secondary"
+              >
+                Doing
+              </Button>
+              <Button
+                onClick={() => handleStatusFilter("willdo")}
+                variant="destructive"
+              >
+                Will Do
+              </Button>
+              <Button
+                onClick={() => handleStatusFilter("done")}
+                variant="success"
+              >
+                Done
+              </Button>
+            </div>
           </div>
           <div className="mt-8">
             <div>

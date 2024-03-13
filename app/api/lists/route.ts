@@ -1,34 +1,32 @@
 import connectMongoDB from "@/lib/mongodb";
-import Section from "@/models/sections";
+import List from "@/models/list";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   try {
     const { userId } = auth();
-
-    const { title, order, boardId } = await req.json();
-    console.log(boardId)
+    const { title, order, cards } = await req.json();
 
     if (!userId)
       return new NextResponse("User not authenticated", { status: 401 });
 
     await connectMongoDB();
 
-    await Section.create({
-      userId,
+    await List.create({
       title,
       order,
-      board: boardId,
+      cards,
+      userId,
     });
 
     return NextResponse.json(
-      { message: "Section created successfully" },
+      { message: "List created successfully" },
       { status: 201 }
     );
   } catch (error) {
     console.log(error);
-    return NextResponse.json("Error creating section", { status: 500 });
+    return NextResponse.json("Error creating list", { status: 500 });
   }
 }
 
@@ -41,12 +39,12 @@ export async function GET(req: Request, res: Response) {
 
     await connectMongoDB();
 
-    const sections = await Section.find({ userId });
+    const lists = await List.find({ userId });
 
-    return NextResponse.json(sections);
+    return NextResponse.json(lists);
   } catch (error) {
     console.log(error);
-    return NextResponse.json("Error getting sections", { status: 500 });
+    return NextResponse.json("Error getting lists", { status: 500 });
   }
 }
 
@@ -58,23 +56,28 @@ export async function PUT(request, { params }) {
     if (!userId)
       return new NextResponse("User not authenticated", { status: 401 });
 
-    const { newTitle: title, newPosition: position } = await request.json();
+    const {
+      newTitle: title,
+      newOrder: order,
+      newCards: cards,
+    } = await request.json();
 
     await connectMongoDB();
 
-    const updatedSection = await Section.findByIdAndUpdate(
+    const updatedList = await List.findByIdAndUpdate(
       id,
       {
         title,
-        position,
+        order,
+        cards,
       },
       { new: true }
     );
 
-    console.log("Section updated", updatedSection);
+    console.log("List updated", updatedList);
 
     return NextResponse.json(
-      { message: "Board updated", board: updatedSection },
+      { message: "List updated", book: updatedList },
       { status: 200 }
     );
   } catch (error) {
@@ -94,7 +97,7 @@ export async function DELETE(request: {
 
   await connectMongoDB();
 
-  await Section.findByIdAndDelete({ _id: id, userId });
+  await List.findByIdAndDelete({ _id: id, userId });
 
-  return NextResponse.json({ message: "Section deleted successfully" });
+  return NextResponse.json({ message: "List deleted successfully" });
 }

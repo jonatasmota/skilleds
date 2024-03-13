@@ -31,6 +31,12 @@ export const AddCourse = () => {
   const addCourse = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
+
+      if (!status) {
+        toast.error("Please select a status");
+        return;
+      }
+
       const res = await fetch("/api/courses", {
         method: "POST",
         headers: {
@@ -87,6 +93,7 @@ export const AddCourse = () => {
                 className="col-span-3"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                required
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
@@ -99,6 +106,7 @@ export const AddCourse = () => {
                 className="col-span-3"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                required
               />
             </div>
             <div className="grid grid-cols-2 items-center gap-4">
@@ -111,6 +119,7 @@ export const AddCourse = () => {
                 className="col-span-3"
                 value={link}
                 onChange={(e) => setLink(e.target.value)}
+                required
               />
             </div>
 
@@ -124,6 +133,7 @@ export const AddCourse = () => {
                   onValueChange={(value: SetStateAction<string>) =>
                     setStatus(value)
                   }
+                  required
                 >
                   <SelectTrigger id="Status">
                     <SelectValue placeholder="Select" />
@@ -131,8 +141,7 @@ export const AddCourse = () => {
                   <SelectContent position="popper">
                     <SelectItem value="doing">Doing</SelectItem>
                     <SelectItem value="willdo">Will Do</SelectItem>
-                    <SelectItem value="applied">Applied</SelectItem>
-                    <SelectItem value="wanttodo">Want to do</SelectItem>
+                    <SelectItem value="done">Done</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

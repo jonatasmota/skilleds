@@ -3,8 +3,8 @@ import mongoose, { Schema } from "mongoose";
 const boardsSchema = new Schema(
   {
     userId: { type: String, required: true },
-    title: String,
-    description: String,
+    title: { type: String, required: true },
+    description: { type: String, required: true },
     position: Number,
   },
   {

@@ -23,21 +23,6 @@ interface CourseItemProps {
   _id: string;
 }
 
-const getStatusVariant = (status: string) => {
-  switch (status) {
-    case "doing":
-      return "success"; // ou qualquer outra variante desejada
-    case "willdo":
-      return "info"; // ou qualquer outra variante desejada
-    case "applied":
-      return "outline"; // ou qualquer outra variante desejada
-    case "wanttodo":
-      return "destructive"; // ou qualquer outra variante desejada
-    default:
-      return "default"; // ou qualquer outra variante padrão
-  }
-};
-
 const CourseItem: React.FC<CourseItemProps> = ({ course, _id }) => {
   const confirmDelete = async () => {
     try {
@@ -68,7 +53,7 @@ const CourseItem: React.FC<CourseItemProps> = ({ course, _id }) => {
           <h2 className="font-semibold">{course.title}</h2>
           <p className="text-sm text-muted-foreground">{course.description}</p>
           <div className="flex items-center gap-6">
-            <Badge className="w-fit">{course.status}</Badge>
+            <Badge className="w-fit capitalize">{course.status}</Badge>
             <Link
               href={
                 course.link.startsWith("http")

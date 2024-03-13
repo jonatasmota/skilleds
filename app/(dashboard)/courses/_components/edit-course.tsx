@@ -20,9 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// import { useAuth } from "@clerk/nextjs";
 import { Pencil } from "lucide-react";
-// import { redirect } from "next/navigation";
 
 import toast from "react-hot-toast";
 
@@ -46,12 +44,6 @@ export const EditCourseModal = ({
   const [newLink, setNewLink] = useState(courseLink || "");
   const [newStatus, setNewStatus] = useState(courseStatus || "");
   const [isOpen, setIsOpen] = useState(false);
-
-  // const { userId } = useAuth();
-
-  // if (!userId) {
-  //   redirect("/");
-  // }
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -114,7 +106,7 @@ export const EditCourseModal = ({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px]">
         <form onSubmit={editCourse}>
-          <DialogHeader>
+          <DialogHeader className="pb-4">
             <DialogTitle>Edit Course</DialogTitle>
             <DialogDescription>
               Make changes to your profile here. Click save when you&apos;re
@@ -122,8 +114,8 @@ export const EditCourseModal = ({
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="title" className="text-right">
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="title" className="opacity60">
                 Title
               </Label>
               <Input
@@ -134,8 +126,8 @@ export const EditCourseModal = ({
                 onChange={(e) => setNewTitle(e.target.value)}
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="description" className="opacity-60">
                 Description
               </Label>
               <Input
@@ -146,8 +138,8 @@ export const EditCourseModal = ({
                 onChange={(e) => setNewDescription(e.target.value)}
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="link" className="text-right">
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="link" className="opacity-60">
                 Link
               </Label>
               <Input
@@ -159,8 +151,8 @@ export const EditCourseModal = ({
               />
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
+            <div className="grid grid-cols-2 items-center gap-4">
+              <div className="flex flex-col space-y-2.5">
                 <Label htmlFor="status">Status</Label>
                 <Select
                   value={newStatus}
@@ -174,8 +166,7 @@ export const EditCourseModal = ({
                   <SelectContent position="popper">
                     <SelectItem value="doing">Doing</SelectItem>
                     <SelectItem value="willdo">Will Do</SelectItem>
-                    <SelectItem value="applied">Applied</SelectItem>
-                    <SelectItem value="wanttodo">Want to do</SelectItem>
+                    <SelectItem value="done">Done</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

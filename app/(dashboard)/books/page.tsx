@@ -18,6 +18,7 @@ import {
   LibraryBig,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface Book {
   id: string;
@@ -39,13 +40,24 @@ const Books = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
-  const [showAllItems, setShowAllItems] = useState(true);
+  const [selectedStatus, setSelectedStatus] = useState(null);
 
   const [itemsToShow, setItemsToShow] = useState({
     reading: initialItemsToShow,
     "to-read": initialItemsToShow,
     done: initialItemsToShow,
   });
+
+  const handleStatusFilter = (status) => {
+    setSelectedStatus(status);
+    const filtered = books.filter((book) => book.status === status);
+    setFilteredBooks(filtered);
+  };
+
+  const handleShowAll = () => {
+    setSelectedStatus(null);
+    setFilteredBooks(books);
+  };
 
   const showMoreItems = (status) => {
     setItemsToShow((prevState) => ({
@@ -173,6 +185,30 @@ const Books = () => {
         <>
           <div className="flex flex-wrap justify-between gap-2 mt-4">
             <SearchInput onSearchChange={handleSearchChange} />
+
+            <div className="flex gap-x-2 pt-4 sm:pt-0 mx-auto md:mx-0">
+              <Button onClick={handleShowAll} variant="outline">
+                Show All
+              </Button>
+              <Button
+                onClick={() => handleStatusFilter("reading")}
+                variant="secondary"
+              >
+                Reading
+              </Button>
+              <Button
+                onClick={() => handleStatusFilter("to-read")}
+                variant="destructive"
+              >
+                To Read
+              </Button>
+              <Button
+                onClick={() => handleStatusFilter("done")}
+                variant="success"
+              >
+                Done
+              </Button>
+            </div>
             <div className="w-full mt-4">
               {getStatuses()
                 .sort((a, b) => {
