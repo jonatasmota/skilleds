@@ -1,5 +1,18 @@
 "use client";
 
+import Link from "next/link";
+import {
+  Activity,
+  ArrowUpRight,
+  Book,
+  CircleUser,
+  Lightbulb,
+  NotebookText,
+  Package2,
+} from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,175 +20,292 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-import { useEffect, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import toast from "react-hot-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
+import { useDateFormat } from "@/hooks/use-date-format";
+import { Spinner } from "@/components/spinner-loading";
+import { Separator } from "@/components/ui/separator";
+
+interface Book {
+  id: string;
+  author: string;
+  subject: string;
+  title: string;
+  description: string;
+  link: string;
+  status: string;
+  createdAt: string;
+  _id: string;
+}
+
+interface Course {
+  id: string;
+  author: string;
+  subject: string;
+  title: string;
+  description: string;
+  link: string;
+  status: string;
+  _id: string;
+}
 
 export default function DashboardPage() {
-  const [data, setData] = useState<
-    { id: string; title: string; description: string }[]
-  >([]);
+  const [books, setBooks] = useState<Book[]>([]);
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [bookCount, setBookCount] = useState(0);
+  const [courseCount, setCoursesCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const bookFetch = async () => {
+  const { formatDate } = useDateFormat();
+
+  const fetchBooks = async () => {
+    setIsLoading(true);
+
     try {
       const res = await fetch("/api/books");
-      const data = await res.json();
-      setData(data);
+      let data = await res.json();
+
+      const dataFiltered = data.filter((book: any) => book.status === "done");
+
+      data = data.sort((a: any, b: any) => {
+        const dateA =
+          typeof a.createdAt === "string" ? new Date(a.createdAt) : a.createdAt;
+        const dateB =
+          typeof b.createdAt === "string" ? new Date(b.createdAt) : b.createdAt;
+        return dateB.getTime() - dateA.getTime();
+      });
+
+      setBookCount(data.length);
+      setBooks(data);
+      setFilteredBooks(dataFiltered);
+      setIsLoading(false);
     } catch (error) {
-      toast.error("Error fetching books");
+      toast.error("Error fetching book count");
+      console.log(error);
+    }
+  };
+
+  const fetchCourses = async () => {
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/courses");
+      const data = await res.json();
+
+      const dataFiltered = data.filter(
+        (course: any) => course.status === "done"
+      );
+
+      setCoursesCount(data.length);
+
+      setFilteredCourses(dataFiltered);
+      setIsLoading(false);
+    } catch (error) {
+      toast.error("Error fetching course count");
       console.log(error);
     }
   };
 
   useEffect(() => {
-    bookFetch();
+    fetchBooks();
+    fetchCourses();
   }, []);
 
   return (
-    <div className="grid items-start gap-y-8 px-8">
-      <div className="h-full">
-        <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">
-              Hi, Welcome back 👋
-            </h2>
-            <div className="hidden md:flex items-center space-x-2">
-              <p>testeeee</p>
-            </div>
-          </div>
-          <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="analytics" disabled>
-                Analytics
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Total Revenue
-                    </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">$45,231.89</div>
-                    <p className="text-xs text-muted-foreground">
-                      +20.1% from last month
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Subscriptions
-                    </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">+2350</div>
-                    <p className="text-xs text-muted-foreground">
-                      +180.1% from last month
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <rect width="20" height="14" x="2" y="5" rx="2" />
-                      <path d="M2 10h20" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">+12,234</div>
-                    <p className="text-xs text-muted-foreground">
-                      +19% from last month
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Active Now
-                    </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">+573</div>
-                    <p className="text-xs text-muted-foreground">
-                      +201 since last hour
-                    </p>
-                  </CardContent>
-                </Card>
+    <div className="flex min-h-screen w-full flex-col">
+      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Books</CardTitle>
+              <Book className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {isLoading ? <Spinner /> : bookCount}
               </div>
-              <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4">
-                  <CardHeader>
-                    <CardTitle>Overview</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pl-2">Overview</CardContent>
-                </Card>
-                <Card className="col-span-4 md:col-span-3">
-                  <CardHeader>
-                    <CardTitle>Recent Sales</CardTitle>
-                    <CardDescription>
-                      You made 265 sales this month.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>Recent Sales</CardContent>
-                </Card>
+              <p className="text-xs text-muted-foreground">
+                +20.1% from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Courses
+              </CardTitle>
+              <NotebookText className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {isLoading ? <Spinner /> : courseCount}
               </div>
-            </TabsContent>
-          </Tabs>
+              <p className="text-xs text-muted-foreground">
+                +180.1% from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Ideas</CardTitle>
+              <Lightbulb className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">+12,234</div>
+              <p className="text-xs text-muted-foreground">
+                +19% from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Active Now</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">+573</div>
+              <p className="text-xs text-muted-foreground">
+                +201 since last hour
+              </p>
+            </CardContent>
+          </Card>
         </div>
-      </div>
+        <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+          <Card className="xl:col-span-2">
+            <CardHeader className="flex flex-row items-center">
+              <div className="grid gap-2">
+                <CardTitle>Your Recent Books</CardTitle>
+                <CardDescription>
+                  A list of your most recent books added
+                </CardDescription>
+              </div>
+              <Button asChild size="sm" className="ml-auto gap-1">
+                <Link href="/books">
+                  View All
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Title</TableHead>
+                    <TableHead className="hidden xl:table-column">
+                      Type
+                    </TableHead>
+                    <TableHead className="hidden xl:table-column">
+                      Status
+                    </TableHead>
+                    <TableHead className="hidden xl:table-column">
+                      Date
+                    </TableHead>
+                    <TableHead className="text-right">Date</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {books.map((book) => (
+                    <TableRow key={book.id}>
+                      <TableCell>
+                        <div className="font-medium">{book.title}</div>
+                        <div className="hidden text-sm text-muted-foreground md:inline">
+                          {book.author}
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden xl:table-column">
+                        Sale
+                      </TableCell>
+                      <TableCell className="hidden text-sm text-muted-foreground md:inline">
+                        <Badge
+                          className="text-xs flex justify-center items-center"
+                          variant="outline"
+                        >
+                          {book.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+                        2023-06-23
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatDate(book.createdAt)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Read Books</CardTitle>
+            </CardHeader>
+
+            {filteredBooks
+              .filter((book) => book.status === "done")
+              .map((book) => (
+                <CardContent key={book.id} className="grid gap-8">
+                  <div className="flex items-center gap-4">
+                    <div className="grid gap-1">
+                      <p className="text-sm font-medium leading-none">
+                        {book.title}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {book.author}
+                      </p>
+                    </div>
+                    <div className="ml-auto font-medium">
+                      <Badge className="capitalize">{book.status}</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              ))}
+
+            <Separator />
+
+            <CardHeader>
+              <CardTitle>Recent Courses Completed</CardTitle>
+            </CardHeader>
+
+            {filteredCourses
+              .filter((course) => course.status === "done")
+              .map((course) => (
+                <CardContent key={course.id} className="grid gap-8">
+                  <div className="flex items-center gap-4">
+                    <div className="grid gap-1">
+                      <p className="text-sm font-medium leading-none">
+                        {course.title}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {course.subject}
+                      </p>
+                    </div>
+                    <div className="ml-auto font-medium">
+                      <Badge className="capitalize">{course.status}</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              ))}
+          </Card>
+        </div>
+      </main>
     </div>
   );
 }

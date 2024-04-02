@@ -10,13 +10,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 import { Pencil } from "lucide-react";
 
 import toast from "react-hot-toast";
-import { Textarea } from "@/components/ui/textarea";
 
 interface ViewIdeaModalProps {
   ideaTitle: string;

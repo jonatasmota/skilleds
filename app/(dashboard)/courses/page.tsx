@@ -31,7 +31,7 @@ const Courses = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [statusSearchPerformed, setStatusSearchPerformed] = useState(false);
 
   const courseFetch = async () => {
@@ -62,7 +62,7 @@ const Courses = () => {
     setCurrentPage(1);
   };
 
-  const handleStatusFilter = (status) => {
+  const handleStatusFilter = (status: string | null) => {
     setSelectedStatus(status);
     setStatusSearchPerformed(true);
     let filtered;
@@ -82,7 +82,7 @@ const Courses = () => {
     : [];
 
   return (
-    <div className="h-full container">
+    <div className="h-full container pb-8">
       <div className="mb-8 space-y-4 flex flex-col md:flex-row xl:flex-row justify-between">
         <div className="grid gap-1">
           <h2 className="text-2xl md:text-4xl font-bold">Your courses</h2>
@@ -128,7 +128,7 @@ const Courses = () => {
         )
       ) : (
         <>
-          <div className="flex flex-wrap justify-between gap-2 mt-4">
+          <div className="flex flex-col justify-center items-center sm:flex-row flex-wrap sm:justify-between gap-2 mt-4">
             <SearchInput onSearchChange={handleSearchChange} />
 
             <div className="flex gap-x-2 pt-4 sm:pt-0 mx-auto md:mx-0">
@@ -157,9 +157,19 @@ const Courses = () => {
                 Done
               </Button>
             </div>
+
+            {filteredCourses && itemsPerPage < filteredCourses.length && (
+              <Pagination
+                totalItems={filteredCourses.length}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            )}
           </div>
+
           <div className="mt-8">
-            <div>
+            <div className=" space-y-2">
               {currentItems.map((course) => (
                 <CourseItem key={course._id} course={course} _id={course._id} />
               ))}
@@ -171,17 +181,6 @@ const Courses = () => {
       {isLoading && (
         <div className="flex items-center justify-center h-screen">
           <Spinner />
-        </div>
-      )}
-
-      {filteredCourses && itemsPerPage < filteredCourses.length && (
-        <div className="text-center md:container pt-8">
-          <Pagination
-            totalItems={filteredCourses.length}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
         </div>
       )}
     </div>

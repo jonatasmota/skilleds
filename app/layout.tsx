@@ -11,7 +11,7 @@ export const fontSans = FontSans({
   variable: "--font-sans",
 });
 export const metadata: Metadata = {
-  title: "skilleds - Track your learning progress",
+  title: "snapnotes - Track your learning progress",
   description: "A platform to track your learning progress",
 };
 

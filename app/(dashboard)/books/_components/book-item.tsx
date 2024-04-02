@@ -60,42 +60,42 @@ const BookItem: React.FC<BookItemProps> = ({ book, _id, onStatusChange }) => {
           {formatDate(book.createdAt)}
         </p>
         <div className="inline-flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => onStatusChange(book._id, "reading")}
-            disabled={book.status === "reading"}
-          >
-            <BookOpen className="h-4 w-4 text-blue-500" />
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => onStatusChange(book._id, "to-read")}
-            disabled={book.status === "to-read"}
-          >
-            <LibraryBig className="h-4 w-4 text-red-500" />
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => onStatusChange(book._id, "done")}
-            disabled={book.status === "done"}
-          >
-            <BookmarkCheck className="h-4 w-4 text-green-500" />
-          </Button>
-        </div>
-      </div>
+          <div>
+            <Button
+              variant="outline"
+              onClick={() => onStatusChange(book._id, "reading")}
+              disabled={book.status === "reading"}
+            >
+              <BookOpen className="h-4 w-4 text-blue-500" />
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => onStatusChange(book._id, "to-read")}
+              disabled={book.status === "to-read"}
+            >
+              <LibraryBig className="h-4 w-4 text-red-500" />
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => onStatusChange(book._id, "done")}
+              disabled={book.status === "done"}
+            >
+              <BookmarkCheck className="h-4 w-4 text-green-500" />
+            </Button>
+          </div>
 
-      <div className="flex">
-        <div className="flex gap-2">
-          <EditBookModal
-            bookAuthor={book.author}
-            bookDescription={book.description}
-            bookId={book._id}
-            bookLink={book.link}
-            bookStatus={book.status}
-            bookSubject={book.subject}
-            bookTitle={book.title}
-          />
-          <DeleteBookModal onConfirm={confirmDelete} />
+          <div className="flex gap-2">
+            <EditBookModal
+              bookAuthor={book.author}
+              bookDescription={book.description}
+              bookId={book._id}
+              bookLink={book.link}
+              bookStatus={book.status}
+              bookSubject={book.subject}
+              bookTitle={book.title}
+            />
+            <DeleteBookModal onConfirm={confirmDelete} />
+          </div>
         </div>
       </div>
     </Card>

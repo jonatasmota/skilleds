@@ -64,7 +64,7 @@ const Ideas = () => {
     : [];
 
   return (
-    <div className="h-full container p-4">
+    <div className="h-full container pb-4">
       <div className="mb-8 space-y-4 flex flex-col md:flex-row xl:flex-row justify-between">
         <div className="grid gap-1">
           <h2 className="text-2xl md:text-4xl font-bold">Your ideas</h2>
@@ -101,7 +101,7 @@ const Ideas = () => {
             <SearchInput onSearchChange={handleSearchChange} />
           </div>
           <div className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
               {currentItems.map((idea) => (
                 <IdeaItem key={idea._id} idea={idea} _id={idea._id} />
               ))}

@@ -114,18 +114,18 @@ export const EditBookModal = ({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button size="sm" variant="outline">
-          <Pencil className="w-5 h-5" />
+          <Pencil className="w-4 h-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[550px]">
         <form onSubmit={editBook}>
-          <DialogHeader>
+          <DialogHeader className="pb-4">
             <DialogTitle>Edit Book</DialogTitle>
             <DialogDescription>Edit the book information</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="title" className="text-right">
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="title" className="opacity-60">
                 Title
               </Label>
               <Input
@@ -136,8 +136,8 @@ export const EditBookModal = ({
                 onChange={(e) => setNewTitle(e.target.value)}
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="author" className="text-right">
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="author" className="opacity-60">
                 Author
               </Label>
               <Input
@@ -148,8 +148,8 @@ export const EditBookModal = ({
                 onChange={(e) => setNewAuthor(e.target.value)}
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="description" className="opacity-60">
                 Description
               </Label>
               <Input
@@ -160,8 +160,8 @@ export const EditBookModal = ({
                 onChange={(e) => setNewDescription(e.target.value)}
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="link" className="text-right">
+            <div className="grid grid-cols-2 items-center gap-4">
+              <Label htmlFor="link" className="opacity-60">
                 Link
               </Label>
               <Input
@@ -173,9 +173,11 @@ export const EditBookModal = ({
               />
             </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="status">Status</Label>
+            <div className="grid grid-cols-2 items-center gap-4">
+              <div className="flex flex-col space-y-2.5">
+                <Label htmlFor="status" className="opacity-60">
+                  Status
+                </Label>
                 <Select
                   value={newStatus}
                   onValueChange={(value: SetStateAction<string>) =>
@@ -192,19 +194,19 @@ export const EditBookModal = ({
                   </SelectContent>
                 </Select>
               </div>
-            </div>
 
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="subject" className="text-right">
-                Subject
-              </Label>
-              <Input
-                id="subject"
-                placeholder="Subject"
-                className="col-span-3"
-                value={newSubject}
-                onChange={(e) => setNewSubject(e.target.value)}
-              />
+              <div className="flex flex-col space-y-2.5">
+                <Label htmlFor="subject" className="opacity-60">
+                  Subject
+                </Label>
+                <Input
+                  id="subject"
+                  placeholder="Subject"
+                  className="col-span-3"
+                  value={newSubject}
+                  onChange={(e) => setNewSubject(e.target.value)}
+                />
+              </div>
             </div>
           </div>
           <DialogFooter>

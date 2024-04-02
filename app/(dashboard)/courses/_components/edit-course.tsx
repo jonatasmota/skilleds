@@ -108,14 +108,11 @@ export const EditCourseModal = ({
         <form onSubmit={editCourse}>
           <DialogHeader className="pb-4">
             <DialogTitle>Edit Course</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
-            </DialogDescription>
+            <DialogDescription>Edit the course information</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-2 items-center gap-4">
-              <Label htmlFor="title" className="opacity60">
+              <Label htmlFor="title" className="opacity-60">
                 Title
               </Label>
               <Input
@@ -153,7 +150,9 @@ export const EditCourseModal = ({
 
             <div className="grid grid-cols-2 items-center gap-4">
               <div className="flex flex-col space-y-2.5">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status" className="opacity-60">
+                  Status
+                </Label>
                 <Select
                   value={newStatus}
                   onValueChange={(value: SetStateAction<string>) =>

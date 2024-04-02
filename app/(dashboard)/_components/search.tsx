@@ -17,12 +17,12 @@ const SearchInput = ({ onSearchChange }: SearchInputProps) => {
 
   return (
     <div className="relative mx-auto md:mx-0 md:w-[300px]">
-      <Search className="h-4 w-4 absolute top-3 left-3 text-slate-600" />
+      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
         value={value}
         onChange={handleSearchChange}
-        className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200 text-slate-600"
-        placeholder="Search"
+        className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+        placeholder="Search..."
       />
     </div>
   );
