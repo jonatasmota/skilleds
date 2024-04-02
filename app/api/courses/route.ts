@@ -1,7 +1,7 @@
 import connectMongoDB from "@/lib/mongodb";
 import Course from "@/models/courses";
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -49,9 +49,7 @@ export async function GET(req: Request, res: Response) {
   }
 }
 
-export async function DELETE(request: {
-  nextUrl: { searchParams: { get: (arg0: string) => any } };
-}) {
+export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
   const { userId } = auth();
 

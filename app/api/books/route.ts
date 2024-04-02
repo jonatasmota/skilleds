@@ -1,7 +1,7 @@
 import connectMongoDB from "@/lib/mongodb";
 import Book from "@/models/books";
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -86,8 +86,6 @@ export async function PUT(request, { params }) {
       { new: true }
     );
 
-    console.log("Book updated", updatedBook); // Adicione este log
-
     return NextResponse.json(
       { message: "Book updated", book: updatedBook },
       { status: 200 }
@@ -101,9 +99,7 @@ export async function PUT(request, { params }) {
   }
 }
 
-export async function DELETE(request: {
-  nextUrl: { searchParams: { get: (arg0: string) => any } };
-}) {
+export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
   const { userId } = auth();
 
