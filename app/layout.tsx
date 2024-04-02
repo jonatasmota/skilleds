@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import ToastProvider from "@/components/providers/toaster-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 
-export const fontSans = FontSans({
+const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
