@@ -1,10 +1,13 @@
 import connectMongoDB from "@/lib/mongodb";
 import Book from "@/models/books";
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // Sua rota GET
-export async function GET(request, { params }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
     const { userId } = auth();
@@ -28,8 +31,10 @@ export async function GET(request, { params }) {
   }
 }
 
-// Sua rota PUT
-export async function PUT(request, { params }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
     const { status: newStatus } = await request.json();
@@ -37,8 +42,6 @@ export async function PUT(request, { params }) {
 
     if (!userId)
       return new NextResponse("User not authenticated", { status: 401 });
-
-    console.log("Updating status...", id, newStatus);
 
     await connectMongoDB();
 
@@ -52,8 +55,6 @@ export async function PUT(request, { params }) {
       return new NextResponse("Book not found or unauthorized", {
         status: 404,
       });
-
-    console.log("Book updated", updatedBook);
 
     return NextResponse.json(
       { message: "Status updated", book: updatedBook },

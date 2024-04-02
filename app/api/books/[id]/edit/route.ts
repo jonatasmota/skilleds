@@ -1,10 +1,11 @@
-// Importações necessárias
-
 import connectMongoDB from "@/lib/mongodb";
 import Book from "@/models/books";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(request, { params }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
 

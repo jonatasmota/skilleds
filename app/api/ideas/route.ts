@@ -49,7 +49,10 @@ export async function GET(req: Request, res: Response) {
   }
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
     const { userId } = auth();

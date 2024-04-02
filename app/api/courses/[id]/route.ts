@@ -1,9 +1,12 @@
 import connectMongoDB from "@/lib/mongodb";
 import Course from "@/models/courses";
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(request, { params }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const { userId } = auth();
     const { id } = params;
@@ -26,14 +29,25 @@ export async function PUT(request, { params }) {
       { new: true }
     );
 
-    return NextResponse.json({ message: "Course updated" }, { status: 200 });
+    if (!updatedCourse)
+      return new NextResponse("Course not found or unauthorized", {
+        status: 404,
+      });
+
+    return NextResponse.json(
+      { message: "Course updated", course: updatedCourse },
+      { status: 200 }
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json("Error updating course", { status: 500 });
   }
 }
 
-export async function GET(request, { params }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const { userId } = auth();
     const { id } = params;

@@ -1,10 +1,13 @@
 import connectMongoDB from "@/lib/mongodb";
 import Idea from "@/models/ideas";
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // Sua rota GET
-export async function GET(request, { params }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
     const { userId } = auth();
