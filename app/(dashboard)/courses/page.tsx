@@ -121,9 +121,8 @@ const Courses = () => {
             <p className="mb-8 text-center text-sm text-muted-foreground leading-6">
               You can add a new course by clicking the button below.
             </p>
-            <Button variant="success">
-              <Link href="/courses/add">Add a new course</Link>
-            </Button>
+
+            <AddCourse />
           </div>
         )
       ) : (

@@ -134,7 +134,7 @@ const Books = () => {
               <File className="w-10 h-10 text-primary-500" />
             </div>
             <h2 className="text-xl mt-6 font-semibold">
-              No courses found with that status
+              No books found with that status
             </h2>
             <p className="mb-8 text-center text-sm text-muted-foreground leading-6">
               You can return to the full list by clicking the button below.
@@ -149,14 +149,13 @@ const Books = () => {
               <File className="w-10 h-10 text-primary-500" />
             </div>
             <h2 className="text-xl mt-6 font-semibold">
-              You don&apos;t have added any courses yet
+              You don&apos;t have added any books yet
             </h2>
             <p className="mb-8 text-center text-sm text-muted-foreground leading-6">
-              You can add a new course by clicking the button below.
+              You can add a new book by clicking the button below.
             </p>
-            <Button variant="success">
-              <Link href="/books/add">Add a new course</Link>
-            </Button>
+
+            <AddBook />
           </div>
         )
       ) : (
