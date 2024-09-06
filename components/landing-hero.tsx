@@ -9,7 +9,7 @@ export const LandingHero = () => {
   const { isSignedIn } = useAuth();
 
   return (
-    <div className="font-bold py-28 text-center space-y-5">
+    <div className="font-bold py-16 text-center space-y-3">
       <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold">
         <h1>The Personal Note Organizer</h1>
         <div className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-blue-500 to-purple-600">
@@ -36,10 +36,6 @@ export const LandingHero = () => {
             Start Now
           </Button>
         </Link>
-      </div>
-
-      <div className="text-zinc-400 text-xs md:text-sm font-normal">
-        This application is free and open source.
       </div>
     </div>
   );

@@ -41,25 +41,22 @@ const features = [
 
 const LandingContent = () => {
   return (
-    <div className="px-10 pb-20">
-      <h2 className="text-center text-4xl font-extrabold mb-10">Features</h2>
-      <div className="flex flex-col md:flex-row justify-center gap-4 items-center">
-        {features.map((feature) => (
-          <Card key={feature.title} className="w-[280px] h-[180px]">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-x-2">
-                <div className="flex items-center">
-                  <span className="mb-2">{feature.icon}</span>
-                  <p className="text-sm ml-2">{feature.title}</p>
-                </div>
-              </CardTitle>
-              <CardContent className="pt-4 px-0">
-                {feature.description}
-              </CardContent>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
+    <div className="flex flex-col md:flex-row justify-center gap-4 items-center">
+      {features.map((feature) => (
+        <Card key={feature.title} className="w-[280px] h-[180px]">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-x-2">
+              <div className="flex items-center">
+                <span className="mb-2">{feature.icon}</span>
+                <p className="text-sm ml-2">{feature.title}</p>
+              </div>
+            </CardTitle>
+            <CardContent className="pt-4 px-0">
+              {feature.description}
+            </CardContent>
+          </CardHeader>
+        </Card>
+      ))}
     </div>
   );
 };
